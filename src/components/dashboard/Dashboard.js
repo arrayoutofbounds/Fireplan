@@ -2,6 +2,8 @@ import React, {Component} from 'react';
 import Notifications from './Notifications';
 import ProjectList from '../project/ProjectList';
 import { connect } from 'react-redux';
+import { firestoreConnect } from 'react-redux-firebase';
+import { compose } from 'redux';
 
 class Dashboard extends Component {
     render(){
@@ -23,8 +25,15 @@ class Dashboard extends Component {
 
 const mapStateToProps = (state) => {
     return {
-        projects: state.project.projects
+        projects: state.firestore.ordered.projects
     }
 }
 
-export default connect(mapStateToProps)(Dashboard);
+export default compose(
+    connect(mapStateToProps),
+    firestoreConnect([
+        { collection: 'projects'}
+    ])
+)(Dashboard);
+
+// when this component mounts, the collection that i want to listen to is projects. When the firestore data is changed, it tells the firestore reducer to sync to state to this projects collection from firestore.
