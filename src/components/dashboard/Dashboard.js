@@ -37,3 +37,4 @@ export default compose(
 )(Dashboard);
 
 // when this component mounts, the collection that i want to listen to is projects. When the firestore data is changed, it tells the firestore reducer to sync to state to this projects collection from firestore.
+// so we are connecting to the firestore and then the redux store and syncing them up as needed for this component.
