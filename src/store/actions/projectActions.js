@@ -5,12 +5,15 @@ export const createProject = (project) => {
         // gives us a reference to the firestore database
         const firestore = getFirestore(); 
 
+        const profile = getState().firebase.profile;
+        const authorId = getState().firebase.auth.uid;
+
         // async, that returns a promise
         firestore.collection('projects').add({ 
             ...project,
-            authorFirstName: 'anmol',
-            authorLastName: 'desai',
-            authorId: 12345,
+            authorFirstName: profile.firstName,
+            authorLastName: profile.lastName,
+            authorId: authorId,
             createdAt: new Date()
         }).then(() => {
             dispatch({type: 'CREATE_PROJECT', project});
