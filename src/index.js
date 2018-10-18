@@ -22,12 +22,14 @@ const enhancer = composeEnhancers(
   applyMiddleware(thunk.withExtraArgument({ getFirebase, getFirestore })),
   // other store enhancers if any
   reduxFirestore(fbConfig),
-  reactReduxFirebase(fbConfig, {attachAuthIsReady: true}),
+  reactReduxFirebase(fbConfig, {useFirestoreForProfile: true, userProfile: 'users', attachAuthIsReady: true}),
 );
+ // uses firestore to sync to profile in auth object, set collection and sync that doc inside collection with profile object in state, attach when auth is ready. Firebase does not know the collection name.
 
 // creates a store
 const store = createStore(rootReducer,  enhancer);
 
+// only show the app when the auth is ready. useful for refreshing to ensure nothing weird shows up in between
 store.firebaseAuthIsReady.then(() => {
   ReactDOM.render(<Provider store={store}><App /></Provider>, document.getElementById('root'));
   registerServiceWorker();

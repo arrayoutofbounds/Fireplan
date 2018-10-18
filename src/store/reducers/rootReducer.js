@@ -8,7 +8,7 @@ const rootReducer = combineReducers({
     auth: authReducer,
     project: projectReducer,
     firestore: firestoreReducer, // going to sync firestore data into redux. Data is dependent on component that is active. need to tell it which data to sync. which collection to get.
-    firebase: firebaseReducer,
+    firebase: firebaseReducer, // automatically goes and gets the current user for us
 });
 
 export default rootReducer;
