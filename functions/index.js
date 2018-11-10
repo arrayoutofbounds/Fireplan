@@ -24,3 +24,19 @@ exports.projectCreated = functions.firestore.document('projects/{projectId}').on
     }
     return createNotification(notification);
 });
+
+// a trigger that is fired when a user is created using the auth service. we create user in the users collection after they sign up using the auth service. we are then
+// getting that user from the users collection.
+exports.userJoined = functions.auth.user().onCreate(user => {
+
+    // getting the record from the users collection and after the get, we get the firestore doc for the user
+    return admin.firestore().collection('users').doc(user.uid).get().then(doc => {
+        const newuser = doc.data();
+        const notification = {
+            content: 'joined the party',
+            user: `${newuser.firstName} ${newuser.lastName}`,
+            time: admin.firestore.FieldValue.serverTimestamp()
+        }
+        return createNotification(notification);
+    });
+});
